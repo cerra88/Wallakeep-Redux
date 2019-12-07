@@ -6,10 +6,6 @@ import Editnew from "./components/advert/Editnew"
 import ErrorBoundary from "./components/advert/ErrorBundary"
 import { UserProvider } from './context/user';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-// import './css/styles.css'
-
-//import 'bulma/css/bulma.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 export default class App extends React.Component {

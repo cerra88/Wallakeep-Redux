@@ -20,7 +20,7 @@ export default class Tags extends React.Component {
    
       }
 
-      componentWillMount(){
+      componentDidMount(){
         this.myTags();
       }
 
@@ -55,7 +55,7 @@ export default class Tags extends React.Component {
             {
                 tags.map(element =>(
                     
-                    <option> {element}</option> 
+                    <option key={element}> {element}</option> 
                 // <option value={element}>{element}</option> 
                 
                 ))

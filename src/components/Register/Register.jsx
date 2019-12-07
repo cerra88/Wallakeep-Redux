@@ -83,6 +83,8 @@ export default class Login extends React.Component {
     this.props.history.push("/advert");
     setUser(this.state.user);
     
+    
+    
     return true;
   };
 
