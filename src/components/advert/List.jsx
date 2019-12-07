@@ -1,11 +1,10 @@
 import React from "react";
 import api from "../../utils/api";
 import AdsList from "./AdsList"
-import { Navbar, Button, Form, FormControl, Nav, NavDropdown, Col, InputGroup  } from 'react-bootstrap';
+import { Navbar, Button, Form, FormControl, Nav, Col, InputGroup  } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import '../../css/styles.css';
 import UserContext from '../../context/user';
-import { number } from "prop-types";
 import {getUser} from '../../utils/storage'
 // import '../../css/bulma.css';
 

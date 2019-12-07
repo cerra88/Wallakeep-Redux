@@ -3,7 +3,7 @@ import api from "../../utils/api";
 // import '../../css/styles.css';
 // import '../../css/bulma.css';
 // import { Link } from "react-router-dom";
-import { Form, Row, Col } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 const { getTags } = api();
 

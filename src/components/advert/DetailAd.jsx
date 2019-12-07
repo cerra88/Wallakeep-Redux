@@ -16,15 +16,16 @@ export default class DetailAd extends React.Component {
     super(props)
 
     this.state = {}
-    console.log(this.props)
+    
   }
 
-  componentWillMount(){
+  componentDidMount(){
     const user = localStorage.getItem('userData');
     if(user == null){
       this.context.updateUser(user);
       this.props.history.push("/register");
     }
+
 
     // const userFromContext = this.context.user;
     // console.log('usuario del contexto es: ', userFromContext);
@@ -32,13 +33,11 @@ export default class DetailAd extends React.Component {
     //   this.props.history.push("/register");
     // }
 
-  }
-  
-  componentDidMount(){
-    
     const adId = this.props.match.params.adId;
     this.findByID(adId);
+
   }
+  
 
   findByID = (adId) =>{
     findAdByID(adId).then(ad => 
@@ -128,10 +127,10 @@ export default class DetailAd extends React.Component {
                 </ButtonToolbar>
                 <br></br>
               <div class="level is-mobile">
-                <div class="level-left"><a class="level-item" href="#">
-                    <div class="tag is-primary">&nbsp;</div></a><a class="level-item" href="#">
-                    <div class="tag is-danger">&nbsp;</div></a><a class="level-item" href="#">
-                    <div class="tag is-dark">&nbsp;</div></a><a class="level-item" href="#">
+                <div class="level-left"><a class="level-item" href=".">
+                    <div class="tag is-primary">&nbsp;</div></a><a class="level-item" href=".">
+                    <div class="tag is-danger">&nbsp;</div></a><a class="level-item" href=".">
+                    <div class="tag is-dark">&nbsp;</div></a><a class="level-item" href=".">
                     <div class="tag is-info">&nbsp;</div></a></div>
               </div>
               <div class="columns">
@@ -159,7 +158,7 @@ export default class DetailAd extends React.Component {
               <hr/>
               <div class="level is-mobile">
                 <div class="level-left">
-                  <div class="level-item"><a href="#">Add to favorites</a></div>
+                  <div class="level-item"><a href=".">Add to favorites</a></div>
                 </div>
                 <div class="level-right">
                   {/* <div class="level-item">Share</div><a class="level-item" href="#"><img src="placeholder/icons/facebook-f.svg" alt=""/></a><a class="level-item" href="#"><img src="placeholder/icons/twitter.svg" alt=""/></a><a class="level-item" href="#"><img src="placeholder/icons/instagram.svg" alt=""/></a> */}

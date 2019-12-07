@@ -7,6 +7,7 @@ import ErrorBoundary from "./components/advert/ErrorBundary"
 import { UserProvider } from './context/user';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {Provider} from 'react-redux';
 
 export default class App extends React.Component {
 
@@ -27,7 +28,8 @@ export default class App extends React.Component {
   render(){
     return(
       
-      <ErrorBoundary>	
+      <ErrorBoundary>
+        <Provider store={this.props.store}>
 				<UserProvider value={this.state}>
         <Router>
           <Switch>
@@ -41,6 +43,7 @@ export default class App extends React.Component {
           </Switch>
         </Router>
         </UserProvider>  
+        </Provider>
 			</ErrorBoundary>
   
     );

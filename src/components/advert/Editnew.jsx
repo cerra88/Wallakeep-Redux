@@ -4,7 +4,7 @@ import '../../css/bulma.css';
 import '../../css/styles.css';
 import { Link } from "react-router-dom";
 import Tags from "../Register/Tags";
-import { Nav, Navbar, Button, ButtonToolbar, Form, FormControl  } from 'react-bootstrap';
+import { Nav, Navbar, Button, Form, FormControl  } from 'react-bootstrap';
 
 
 const { findAdByID, editAdvert, newAdvert } = api();

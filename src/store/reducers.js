@@ -4,11 +4,12 @@ import * as TYPES  from './types';
 
 const initialState ={
     user: {},
-    ads: "",
+    ads: [],
 }
 
 const user = (state = initialState.user, action) => {
-    switch(action.types){
+    
+    switch(action.type){
         case TYPES.SET_USER:
             return action.user
         
@@ -19,7 +20,7 @@ const user = (state = initialState.user, action) => {
 
 
 const ads = (state = initialState.ads, action) => {
-    switch(action.types){
+    switch(action.type){
         case TYPES.SET_ADS:
             return action.ads
 

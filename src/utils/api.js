@@ -9,7 +9,6 @@ export const api = () => {
     getTagsAds: (query) => {
         
         const endPoint = `http://localhost:3001/apiv1/anuncios?tag=${query}`
-        console.log(endPoint)
         return axios.get(endPoint)
         .then(response => response.data.results)
 
@@ -23,22 +22,22 @@ export const api = () => {
     },
 
     getAdsbySearch: (name, price, tagSelected, venta) => {
-        console.log(name, price, tagSelected, venta);
+        
         let endPoint = `${API_URL}`
         
         if(tagSelected){
           endPoint = `${API_URL}tag=${tagSelected}`
-          console.log(endPoint)
+          
         }if(price){
           endPoint = `${endPoint}&price=0-${price}`
-          console.log(endPoint)
+          
            
         }if(name){
           endPoint = `${endPoint}&name=${name}`
-          console.log(endPoint)
+          
         }if(venta){
           endPoint = `${endPoint}&venta=${venta}`
-          console.log(endPoint)
+          
         }
         // console.log(endPoint)
         return axios.get(endPoint)
@@ -47,7 +46,7 @@ export const api = () => {
     },
 
     findAds: (query) => {
-        console.log('findAds funcionando')
+        
         const endPoint = `http://localhost:3001/apiv1/anuncios?name=${query}`;
         
         return axios.get(endPoint)
@@ -56,7 +55,7 @@ export const api = () => {
 
     findAdByID: (id) => {
         const endPoint = `http://localhost:3001/apiv1/anuncios/${id}`;
-        console.log(endPoint)
+        
         return axios.get(endPoint)
         .then(response => response.data.result)
       },
@@ -87,7 +86,7 @@ export const api = () => {
       // }else{
       //   advert.venta = false;
       // }
-      console.log(advert)
+      
 			return axios({
 				method: 'post',
 				url: endPoint,

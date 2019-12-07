@@ -1,6 +1,5 @@
 import React from 'react';
 import '../../css/styles.css';
-import { Link } from "react-router-dom";
 import Tags from "./Tags";
 import UserContext from '../../context/user'
 import Register from '../Register/Register'
@@ -101,7 +100,7 @@ export default class Login extends React.Component {
 
 
   render(){
-    const { user } = this.state;
+    // const { user } = this.state;
     if (Object.entries(this.context.user).length !== 0) {
       return null;
     }
