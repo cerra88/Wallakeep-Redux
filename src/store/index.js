@@ -1,8 +1,52 @@
-import {createStore} from 'redux'
-import reducer from './reducers'
+import {createStore, combineReducers, applyMiddleware} from 'redux'
+import {createLogger} from 'redux-logger'
+import thunkMiddelware from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension';
+import {getUser} from '../utils/storage'
+import * as reducers from './reducers';
 
-export function configureStore(preloadedState) {
-    const store = createStore(reducer, preloadedState, composeWithDevTools());
+const userStorage = getUser();
+const loggerMiddleware = createLogger();
+const composeEnhancers = composeWithDevTools;
+
+function preloadedState(state = {}) {
+
+    if(userStorage !== null){
+    return {
+            user: {
+                name:       userStorage.name,
+                surname:    userStorage.surname,
+                tags:       userStorage.tags,
+                isRegister: userStorage.isRegister
+            },
+            ads: [],
+            ui: {
+                isFetching: false,
+                err: null
+            }
+            
+    }
+    }else{
+        return{
+            user: {},
+            ads: [],
+            ui: {
+                isFetching: false,
+                err: null
+            }
+            
+        }
+    }
+}
+    
+
+
+export function configureStore() {
+    const reducer = combineReducers(reducers);
+    const middlewares = [thunkMiddelware, loggerMiddleware]
+    const store = createStore(
+            reducer,
+            preloadedState(),
+            composeEnhancers(applyMiddleware(...middlewares)))
     return store;
 }

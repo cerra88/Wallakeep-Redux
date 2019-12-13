@@ -1,10 +1,14 @@
-import {combineReducers} from 'redux';
+/* eslint-disable no-unused-vars */
 import * as TYPES  from './types';
 
 
 const initialState ={
     user: {},
     ads: [],
+    ui: {
+        isFetching: false,
+        err: null
+    }
 }
 
 const user = (state = initialState.user, action) => {
@@ -21,17 +25,33 @@ const user = (state = initialState.user, action) => {
 
 const ads = (state = initialState.ads, action) => {
     switch(action.type){
-        case TYPES.SET_ADS:
+        case TYPES.FETCH_ADS_SUCCESS:
             return action.ads
-
+            
         default: 
             return state;
     }
 }
 
-const reducer = combineReducers({
-    user,
-    ads
-})
 
-export default reducer;
+const ui = (state = initialState.ui, action) => {
+    switch(action.type){
+        case TYPES.FETCH_ADS_REQUEST:
+            return {
+                ...state, isFetching: true, err: null 
+            }
+        
+        case TYPES.FETCH_ADS_SUCCESS:
+            return {
+                ...state, isFetching: false, err: null 
+            }
+        
+        case TYPES.FETCH_ADS_FAILURE:
+            return {
+                ...state, isFetching: false, err: action.err
+            }
+
+        default: 
+            return state;
+    }
+}

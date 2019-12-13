@@ -6,11 +6,11 @@ export const api = () => {
     
   return {
 
-    getTagsAds: (query) => {
+    getTagsAds: async (query) => {
         
         const endPoint = `http://localhost:3001/apiv1/anuncios?tag=${query}`
-        return axios.get(endPoint)
-        .then(response => response.data.results)
+        const response = await axios.get(endPoint);
+      return response.data.results;
 
     },
     
@@ -54,14 +54,15 @@ export const api = () => {
     },
 
     findAdByID: (id) => {
+        console.log(id)
         const endPoint = `http://localhost:3001/apiv1/anuncios/${id}`;
-        
         return axios.get(endPoint)
         .then(response => response.data.result)
+        
       },
       
       getTags: () => {
-        const endPoint = `http://127.0.0.1:3001/apiv1/tags`
+        const endPoint = `http://localhost:3001/apiv1/tags`
         
         return axios.get(endPoint)
         .then(response => response.data.results)
@@ -77,9 +78,11 @@ export const api = () => {
           url: endPoint,
           data: advert 
         }).then(res => res)
+        
     },
     
-    newAdvert: (advert) => {
+    newAdvert: async (advert) => {
+      console.log(advert)
       const endPoint = `http://localhost:3001/apiv1/anuncios`;
       // if(advert.venta === "true"){
       //   advert.venta = true;
@@ -87,12 +90,12 @@ export const api = () => {
       //   advert.venta = false;
       // }
       
-			return axios({
-				method: 'post',
-				url: endPoint,
+			const res = await axios({
+        method: 'post',
+        url: endPoint,
         data: advert
-        
-      }).then(res => res.data)
+      });
+      return res.data;
     }
 
 

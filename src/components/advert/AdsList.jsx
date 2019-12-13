@@ -25,7 +25,7 @@ render() {
                         <Link to={`/advert/${ad._id}`} className="card-header-title"><Card.Title>{ad.name}</Card.Title> </Link>
                         <Card.Text>{ad.description}</Card.Text>
                         <Card.Text>{ad.price}€</Card.Text>
-                        <Button variant="outline-primary" >I want to: {ad.type}</Button>
+                        <Button className="adTypeButton" variant="outline-secondary" >{ad.type}</Button>
                         <Link to={`/editnew/${ad._id}`}><Card.Text><Button variant="outline-primary">EDIT</Button></Card.Text></Link>
                         <ButtonToolbar>
                         {
@@ -39,7 +39,8 @@ render() {
                         </ButtonToolbar>
                     </Card.Body>
                     <Card.Footer>
-                        <small className="text-muted">Created: {ad.createdAt}</small>
+                        <small className="text-muted">Created: {ad.createdAt.split('T')[0]}</small>
+                        <br></br>
                     </Card.Footer>
                 </Card>
                ))}

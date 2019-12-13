@@ -3,13 +3,16 @@ import '../../css/styles.css';
 import Tags from "./Tags";
 import UserContext from '../../context/user'
 import Register from '../Register/Register'
-import {setUser, getUser} from './../../utils/storage';
+import {setUser} from './../../utils/storage';
+import {connect} from 'react-redux';
+import { setReduxUser } from '../../store/actions'
 
 
-export default class Login extends React.Component {
+export class Login extends React.Component {
 
     constructor(props) {
         super(props);
+        console.log(props)
         this.state = {
           user:{
             name: '',
@@ -24,40 +27,19 @@ export default class Login extends React.Component {
         
     }
 
-    updateFilterFromStorage () {
-      const user = getUser();
-      console.log('el usuario del getUser es: ', user);
-      if (user !== null) {
-        this.context.updateUser(user);
-        console.log('paso')
-      }
-      return user;
-    }
+   
 
 
 
   componentDidMount(){
-    // console.log('compruebo user antes de montar componente registro');
-    // const user =  this.updateFilterFromStorage();
-    // console.log(user);
-    // // const userFromContext = this.context.user;
-    // // console.log('usuario de contexto es:', userFromContext);
-    // // console.log('usuario de localstorage es:', user);
-    // // console.log(user, this.props);
-    // if (Object.entries(user).length !== 0) {
-    //   this.props.history.push("/advert");
-    // }
 
-    console.log('compruebo user antes de montar componente registro');
     const user = localStorage.getItem('userData');
-    const userFromContext = this.context.user;
-    console.log('usuario de contexto es:', userFromContext);
-    console.log('usuario de localstorage es:', user);
-    console.log(user, userFromContext);
     if(user !== null){
+      this.props.setUserToRedux(user)
+      const userReduxUpdate = this.props.setUserToRedux(user);
+      console.log(userReduxUpdate)
       this.props.history.push("/advert");
     }
-
   }
 
 
@@ -77,10 +59,11 @@ export default class Login extends React.Component {
       return false;
     }
     
-    this.context.updateUser(this.state.user);
-    console.log('paso asdfasdf')
+    // this.context.updateUser(this.state.user);
+    
     this.props.history.push("/advert");
     setUser(this.state.user);
+    this.props.setUserToRedux(this.state.user)
     
     
     
@@ -101,9 +84,9 @@ export default class Login extends React.Component {
 
   render(){
     // const { user } = this.state;
-    if (Object.entries(this.context.user).length !== 0) {
-      return null;
-    }
+    // if (Object.entries(this.context.user).length !== 0) {
+    //   return null;
+    // }
 
     return(
       <React.Fragment>
@@ -140,5 +123,21 @@ export default class Login extends React.Component {
     
 
 }
+
+function mapDispatchToProps(dispatch)  {
+  return{
+      setUserToRedux: user => dispatch(setReduxUser(user))
+  }
+
+}
+
+function mapStateToProps(state)  {
+  return{
+      user: state.user,
+  }
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 Register.contextType = UserContext;

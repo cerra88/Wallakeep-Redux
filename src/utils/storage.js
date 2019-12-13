@@ -6,3 +6,4 @@ export const getUser = () => {
     const user = localStorage.getItem('userData');
     return JSON.parse(user);
 }
+

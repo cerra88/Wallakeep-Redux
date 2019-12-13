@@ -4,14 +4,14 @@ import '../../css/bulma.css';
 import '../../css/styles.css';
 import { Link } from "react-router-dom";
 import UserContext from '../../context/user';
-
+import {connect} from 'react-redux';
 
 import { Nav, Navbar, Button, ButtonToolbar, Form, FormControl  } from 'react-bootstrap';
 
 
 const { findAdByID } = api();
 
-export default class DetailAd extends React.Component {
+export class DetailAd extends React.Component {
   constructor(props){
     super(props)
 
@@ -20,8 +20,8 @@ export default class DetailAd extends React.Component {
   }
 
   componentDidMount(){
-    const user = localStorage.getItem('userData');
-    if(user == null){
+    const user = this.props.user;
+    if(Object.keys(user).length === 0){
       this.context.updateUser(user);
       this.props.history.push("/register");
     }
@@ -176,4 +176,13 @@ export default class DetailAd extends React.Component {
   
   
 }
+
+function mapStateToProps(state)  {
+  return{
+      user: state.user,
+  }
+
+}
+export default connect(mapStateToProps, null)(DetailAd);
+
 DetailAd.contextType = UserContext;

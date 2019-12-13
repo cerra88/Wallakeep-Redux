@@ -4,33 +4,34 @@ import List from "./components/advert/List"
 import DetailAd from "./components/advert/DetailAd"
 import Editnew from "./components/advert/Editnew"
 import ErrorBoundary from "./components/advert/ErrorBundary"
-import { UserProvider } from './context/user';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import {Provider} from 'react-redux';
+import { connect } from 'react-redux';
+import api from './utils/api'
+import {Alert} from 'react-bootstrap';
+import ReactSpinner from 'react-bootstrap-spinner'
+import {fetchAds} from './store/actions'
 
-export default class App extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.updateUser = this.updateUser.bind(this);
-    this.state = {
-      user: {},
-      updateUser: this.updateUser
-    };
-    
-	}
+export class App extends React.Component {
 
-	updateUser(user) {
-    this.setState({ user })
-	}
+  
+  componentDidMount() {
+    this.loadAds();
+  }
+
+  loadAds = this.props.loadAds;
   
   render(){
+    
+    
+    const {isFetching, err } = this.props;
     return(
-      
+      <div>
       <ErrorBoundary>
         <Provider store={this.props.store}>
-				<UserProvider value={this.state}>
+				{/* <UserProvider value={this.state}> */}
         <Router>
           <Switch>
               <Route exact path="/" component={Register} />
@@ -42,10 +43,36 @@ export default class App extends React.Component {
               <Route component={List}/>
           </Switch>
         </Router>
-        </UserProvider>  
+        {/* </UserProvider>   */}
         </Provider>
 			</ErrorBoundary>
-  
+      {isFetching && <ReactSpinner type="grow" color="info" size="60" />}
+      {err && <Alert key="alert" variant="info"> {err}}</Alert>}
+      </div>
     );
   }
 }
+
+// function mapDispatchToProps(dispatch)  {
+//   return{
+//     loadAds: () => dispatch(fetchAds()),
+    
+//   }
+// }
+
+const mapDispatchToProps = {
+  loadAds: fetchAds, 
+}
+
+function mapStateToProps(state)  {
+  return{
+      user: state.user,
+      ads: state.ads,
+      isFetching: state.ui.isFetching,
+      err: state.ui.err
+      
+  }
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -6,11 +6,13 @@ import { Link } from "react-router-dom";
 import '../../css/styles.css';
 import UserContext from '../../context/user';
 import {getUser} from '../../utils/storage'
-// import '../../css/bulma.css';
+import {connect} from 'react-redux';
+// import { setReduxUser } from '../../store/actions'
+
 
 const { getAds, findAds, getTags, getTagsAds, getAdsbySearch } = api();
 
-export default class Adverts extends React.Component {
+export class Adverts extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -36,23 +38,10 @@ export default class Adverts extends React.Component {
 
   componentDidMount(){
     
-    const user = localStorage.getItem('userData');
-    // // const userFromContext = this.context.user;
-    // // const user = this.updateFilterFromStorage() || this.context.user;
-    // // console.log('user: ', user)
-    
-
-    // // if (Object.entries(user).length !== 0) {
-    // //   this.context.updateUser(user);
-    // //   this.props.history.push("/register");
-    // // }
-
-    // // if(Object.entries(userFromContext).length === 0){
-    // //   this.props.history.push("/register");
-    // // }
-    
-    if(user == null){
-      this.context.updateUser(user);
+    const user = this.props.user
+    console.log(Object.keys(user))
+    if(Object.keys(user).length === 0){
+      // this.context.updateUser(user);
       this.props.history.push("/register");
     }
 
@@ -81,10 +70,11 @@ resetAds = () => {
 
 myAds = () => {
 
-      const user = JSON.parse(localStorage.getItem('userData'));  
+      const user = this.props.user
       if(user == null){
         this.context.updateUser(user);
         this.props.history.push("/register");
+        return;
       }
         
         getTagsAds(user.tags).then(ad =>
@@ -136,7 +126,7 @@ myAds = () => {
 
 
   render() {
-
+    console.log('ads desde redux: ', this.props.ads);
     const { ads } = this.state;
     const { tags, loading } = this.state;
 
@@ -267,5 +257,19 @@ myAds = () => {
     );
   }
 }
+
+
+
+function mapStateToProps(state)  {
+  return{
+      user: state.user,
+      ads: state.ads,
+      isFetching: state.ui.isFetching,
+      err: state.ui.err
+  }
+
+}
+
+export default connect(mapStateToProps, null)(Adverts);
 
 Adverts.contextType = UserContext;

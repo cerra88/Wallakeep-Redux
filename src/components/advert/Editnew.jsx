@@ -26,9 +26,10 @@ export default class Editnew extends React.Component {
  
     this.onSubmit = this.onSubmit.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
+    this.findByID = this.findByID.bind(this);
   }
 
-  componentWillMount(){
+  componentDidMount(){
     const user = localStorage.getItem('userData');
     if(user == null){
       this.props.history.push("/register");
@@ -43,6 +44,7 @@ export default class Editnew extends React.Component {
     }else{
         console.log('setState con la info del articulo')
         this.findByID(adId);
+        
     }
 
   }
@@ -91,7 +93,7 @@ export default class Editnew extends React.Component {
   onSubmit(event) {
     event.preventDefault();
     console.log(this.state.advert)
-    console.log(typeof this.state.advert.type)
+    console.log(typeof (this.state.advert.type))
 
     // if(this.state.advert.type === "true"){
     //     console.log('paso por true')
@@ -137,7 +139,7 @@ export default class Editnew extends React.Component {
 
   render(){
     const { advert } = this.state;
-    
+    console.log(advert)
 
      
 
@@ -179,7 +181,7 @@ export default class Editnew extends React.Component {
             <label className="label is-size-6"></label>
             <div className="control">
                 Ad Name
-              <input className="input" type="text" value={advert.adName}  name="name" onChange={this.onInputChange}/>
+              <input className="input" type="text" value={advert.name}  name="name" onChange={this.onInputChange}/>
             </div>
           </div>
 
@@ -187,7 +189,7 @@ export default class Editnew extends React.Component {
             <label className="label"></label>
             <div className="control">
                 Description
-              <input className="input" type="text" placeholder={advert.adDescription}  name="description" onChange={this.onInputChange} />
+              <input className="input" type="text" placeholder={advert.description}  name="description" onChange={this.onInputChange} />
             </div>
           </div>
 
@@ -195,7 +197,7 @@ export default class Editnew extends React.Component {
             <label className="label"></label>
             <div className="control">
                 Price €:
-              <input className="input" type="number" placeholder={advert.adPrice} name="price" onChange={this.onInputChange} />
+              <input className="input" type="number" placeholder={advert.price} name="price" onChange={this.onInputChange} />
             </div>
           </div>
 
@@ -204,7 +206,7 @@ export default class Editnew extends React.Component {
             <div className="control">
                 Buy or  Sell:
                 <br></br>
-                <select className="select" name="type" placeholder={advert.adType} onChange={this.onInputChange}>
+                <select className="select" name="type" placeholder={advert.type} onChange={this.onInputChange}>
                             <option value="buy">buy</option>
                             <option value="sell">sell</option>
                           </select>
@@ -218,7 +220,7 @@ export default class Editnew extends React.Component {
             <label className="label"></label>
             <div className="control">
             Photo url:
-            <input className="input" type="text" placeholder={advert.adPhoto} name="photo" onChange={this.onInputChange}/>
+            <input className="input" type="text" placeholder={advert.photo} name="photo" onChange={this.onInputChange}/>
                 <div class="column is-6-desktop"><img src={`http://localhost:3001/${advert.adPhoto}`} alt=""/></div>
             </div>
           </div>
