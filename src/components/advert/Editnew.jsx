@@ -5,11 +5,13 @@ import '../../css/styles.css';
 import { Link } from "react-router-dom";
 import Tags from "../Register/Tags";
 import { Nav, Navbar, Button, Form, FormControl  } from 'react-bootstrap';
+import {connect} from 'react-redux';
+import {fetchSingleAd, editAds} from '../../store/actions'
 
 
 const { findAdByID, editAdvert, newAdvert } = api();
 
-export default class Editnew extends React.Component {
+export class Editnew extends React.Component {
   constructor(props){
     super(props)
     this.state = {
@@ -20,8 +22,9 @@ export default class Editnew extends React.Component {
             price: "",
             tags: [],
             photo: "",
-            edit: false,
+            
         },
+        edit: false,
     }
  
     this.onSubmit = this.onSubmit.bind(this);
@@ -30,8 +33,8 @@ export default class Editnew extends React.Component {
   }
 
   componentDidMount(){
-    const user = localStorage.getItem('userData');
-    if(user == null){
+    const user = this.props.user;
+    if(Object.keys(user).length === 0){
       this.props.history.push("/register");
     }
 
@@ -42,8 +45,15 @@ export default class Editnew extends React.Component {
         console.log('adId es undefined, no hago setState y cargo el form con datos vacios')
 
     }else{
-        console.log('setState con la info del articulo')
-        this.findByID(adId);
+        console.log('llamo a la función de redux para que me traiga el ad')
+        this.props.loadAd(adId)  
+        console.log(this.props.detailAd)
+        this.setState({
+          advert: this.props.detailAd,
+          edit: true
+        }) 
+        // this.findByID(adId);
+        
         
     }
 
@@ -92,30 +102,17 @@ export default class Editnew extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-    console.log(this.state.advert)
-    console.log(typeof (this.state.advert.type))
-
-    // if(this.state.advert.type === "true"){
-    //     console.log('paso por true')
-    //     this.setState({
-    //         advert:{
-    //             type: true,
-    //         }
-    //     });
-    //     console.log(typeof this.state.advert.type)
-    // }else if(this.state.advert.type === "false"){
-    //     console.log('paso por false')
-    //     this.setState({
-    //         advert:{
-    //             type: false,
-    //         }
-    //     });
-    // }
-    if (this.state.advert.edit === true) {
-      return editAdvert(this.state.advert.adId, this.state.advert)
-        .then((res) => {
-          alert('Advert have been updated')
-        })
+    console.log(this.state)
+    console.log(this.state.advert._id)
+    
+    
+    if (this.state.edit === true) {
+      console.log('paso')
+      this.props.editAd(this.state.advert._id, this.state.advert)
+      // return editAdvert(this.state.advert._id, this.state.advert)
+      //   .then((res) => {
+      //     alert('Advert have been updated')
+      //   })
 
     }
     
@@ -141,7 +138,11 @@ export default class Editnew extends React.Component {
     const { advert } = this.state;
     console.log(advert)
 
-     
+    
+
+     if(!advert){
+       return null
+     }
 
     return(
       <React.Fragment>
@@ -236,82 +237,28 @@ export default class Editnew extends React.Component {
           
           </form>
         </div>
-
-        
-
-
-
-
-    //     <section class="section">
-    //     <div class="container">
-    //       <div class="columns is-desktop is-vcentered">
-    //         <div class="column is-6-desktop"><img src={`http://localhost:3001/${ad.photo}`} alt=""/></div>
-    //         <div class="column is-6-desktop">
-    //           <div class="level is-mobile">
-                
-    //           </div>
-    //           <h2 class="title is-spaced">{ad.name}</h2>
-    //           <p class="subtitle">{ad.description}</p>
-    //           <ButtonToolbar>
-    //                     {
-    //                         ad.tags.map(tag => (
-                            
-    //                         <Button className="tagButton" variant="outline-info"  size="">{tag}</Button>
-    //                         ))
-                            
-                        
-    //                     }
-    //             </ButtonToolbar>
-    //             <br></br>
-    //           <div class="level is-mobile">
-    //             <div class="level-left"><a class="level-item" href="#">
-    //                 <div class="tag is-primary">&nbsp;</div></a><a class="level-item" href="#">
-    //                 <div class="tag is-danger">&nbsp;</div></a><a class="level-item" href="#">
-    //                 <div class="tag is-dark">&nbsp;</div></a><a class="level-item" href="#">
-    //                 <div class="tag is-info">&nbsp;</div></a></div>
-    //           </div>
-    //           <div class="columns">
-    //             <div class="column is-half">
-    //               <div class="field is-horizontal">
-    //                 <div class="field-label is-normal">
-    //                   <label class="label">{ad.price}€</label>
-    //                 </div>
-    //                 <div class="field-body">
-    //                   <div class="field">
-    //                     <div class="control">
-
-    //                     </div>
-    //                   </div>
-    //                   <div class="field">
-    //                     <div class="control">
-    //                       <button class="button is-primary">To: {ad.type}</button>
-    //                     </div>
-    //                   </div>
-    //                   <div><Link to={`/advert`}> <Button variant="outline-secondary">GoBack</Button></Link></div>
-    //                 </div>
-    //               </div>
-    //             </div>
-    //           </div>
-    //           <hr/>
-    //           <div class="level is-mobile">
-    //             <div class="level-left">
-    //               <div class="level-item"><a href="#">Add to favorites</a></div>
-    //             </div>
-    //             <div class="level-right">
-    //               {/* <div class="level-item">Share</div><a class="level-item" href="#"><img src="placeholder/icons/facebook-f.svg" alt=""/></a><a class="level-item" href="#"><img src="placeholder/icons/twitter.svg" alt=""/></a><a class="level-item" href="#"><img src="placeholder/icons/instagram.svg" alt=""/></a> */}
-    //             </div>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </section>
         
       }
      
      </React.Fragment>
     )}
-    
-
-
-  
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    loadAd: id => dispatch(fetchSingleAd(id)),
+
+    editAd: (id, advert) => dispatch(editAds(id, advert))
+  }
+}
+
+
+function mapStateToProps(state)  {
+  return{
+      user: state.user,
+      isFetching: state.isFetching,
+      detailAd: state.detailAd
+  }
+
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Editnew);

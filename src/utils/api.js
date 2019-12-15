@@ -54,7 +54,6 @@ export const api = () => {
     },
 
     findAdByID: async (id) => {
-        console.log(id)
         const endPoint = `http://localhost:3001/apiv1/anuncios/${id}`;
         const response = await axios.get(endPoint);
       return response.data.result;
@@ -72,7 +71,7 @@ export const api = () => {
 
     editAdvert: async (id, advert) => {
       const endPoint = `http://localhost:3001/apiv1/anuncios/${id}`;
-      
+      console.log('enpoint de edit es: ', endPoint)
 			const res = await axios({
         method: 'put',
         url: endPoint,

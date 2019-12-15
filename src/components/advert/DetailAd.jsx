@@ -1,5 +1,4 @@
 import React from 'react';
-import api from "../../utils/api";
 import '../../css/bulma.css';
 import '../../css/styles.css';
 import { Link } from "react-router-dom";
@@ -9,7 +8,7 @@ import {fetchSingleAd} from '../../store/actions'
 import { Nav, Navbar, Button, ButtonToolbar, Form, FormControl  } from 'react-bootstrap';
 
 
-const { findAdByID } = api();
+// const { findAdByID } = api();
 
 export class DetailAd extends React.Component {
   constructor(props){
@@ -34,23 +33,29 @@ export class DetailAd extends React.Component {
 
     const adId = this.props.match.params.adId;
     // this.findByID(adId);
-    this.props.loadAd(adId)
-
+    this.props.loadAd(adId)    
   }
   
 
-  findByID = (adId) =>{
-    findAdByID(adId).then(ad => 
-      this.setState({
-        ad
-     })
-    )
-  }
+  // findByID = (adId) =>{
+  //   findAdByID(adId).then(ad => 
+  //     this.setState({
+  //       ad
+  //    })
+  //   )
+  // }
   
   
 
   render(){
-    const { ad } = this.state;
+    // const { ad } = this.state;
+    const ad  = this.props.detailAd;
+    console.log(this.props.detailAd)
+    // console.log(this.props.isFetching)
+
+    if(!ad){
+      return null
+    }
     
     return(
       <React.Fragment>
@@ -81,73 +86,52 @@ export class DetailAd extends React.Component {
 </Navbar>
         
       {
-        ad
+        ad 
         &&
-        // <div className="col-xs-12 cardcont nopadding">
-
-        //   <div className="meta-data-container col-xs-12 col-md-8 push-md-4 col-lg-7 push-lg-5">
-        //     <h1>{ad.name}</h1>
-
-        //     {/* <span className="tagline">{data.tagline}</span> */}
-        //     <p>{ad.description}</p>
-        //     <div className="additional-details">
-        //       <span className="genre-list">{ad.tags}</span>
-        //       {/* <span className="production-list">{productionList}</span> */}
-        //       <div className="row nopadding release-details">
-        //         <div className="col-xs-6"> Created at: <span className="meta-data">{ad.createdAt}</span></div>
-        //         <div className="col-xs-6"> Last Update: <span className="meta-data">{ad.updatedAt} mins</span> </div>
-        //         <div className="col-xs-6"> Price: <span className="meta-data">{ad.price}</span></div>
-        //         <div className="col-xs-6"> To: <span className="meta-data">{ad.type}</span></div>
-        //       </div>
-        //     </div>
-        //   </div>
-        //   <div className="poster-container nopadding  ">
-        //     <img id="postertest" alt="" className='poster' src={`http://localhost:3001/${ad.photo}`}/>
-        //   </div>
-        // </div>
-        <section class="section">
-        <div class="container">
-          <div class="columns is-desktop is-vcentered">
-            <div class="column is-6-desktop"><img src={`http://localhost:3001/${ad.photo}`} alt=""/></div>
-            <div class="column is-6-desktop">
-              <div class="level is-mobile">
+       
+        <section className="section">
+        <div className="container">
+          <div className="columns is-desktop is-vcentered">
+            <div className="column is-6-desktop"><img src={`http://localhost:3001/${ad.photo}`} alt=""/></div>
+            <div className="column is-6-desktop">
+              <div className="level is-mobile">
                 
               </div>
-              <h2 class="title is-spaced">{ad.name}</h2>
-              <p class="subtitle">{ad.description}</p>
+              <h2 className="title is-spaced">{ad.name}</h2>
+              <p className="subtitle">{ad.description}</p>
               <ButtonToolbar>
                         {
                             ad.tags.map(tag => (
                             
-                            <Button className="tagButton" variant="outline-info"  size="">{tag}</Button>
+                            <Button key={tag} className="tagButton" variant="outline-info"  size="">{tag}</Button>
                             ))
                             
                         
                         }
                 </ButtonToolbar>
                 <br></br>
-              <div class="level is-mobile">
-                <div class="level-left"><a class="level-item" href=".">
-                    <div class="tag is-primary">&nbsp;</div></a><a class="level-item" href=".">
-                    <div class="tag is-danger">&nbsp;</div></a><a class="level-item" href=".">
-                    <div class="tag is-dark">&nbsp;</div></a><a class="level-item" href=".">
-                    <div class="tag is-info">&nbsp;</div></a></div>
+              <div className="level is-mobile">
+                <div className="level-left"><a className="level-item" href=".">
+                    <div className="tag is-primary">&nbsp;</div></a><a className="level-item" href=".">
+                    <div className="tag is-danger">&nbsp;</div></a><a className="level-item" href=".">
+                    <div className="tag is-dark">&nbsp;</div></a><a className="level-item" href=".">
+                    <div className="tag is-info">&nbsp;</div></a></div>
               </div>
-              <div class="columns">
-                <div class="column is-half">
-                  <div class="field is-horizontal">
-                    <div class="field-label is-normal">
-                      <label class="label">{ad.price}€</label>
+              <div className="columns">
+                <div className="column is-half">
+                  <div className="field is-horizontal">
+                    <div className="field-label is-normal">
+                      <label className="label">{ad.price}€</label>
                     </div>
-                    <div class="field-body">
-                      <div class="field">
-                        <div class="control">
+                    <div className="field-body">
+                      <div className="field">
+                        <div className="control">
 
                         </div>
                       </div>
-                      <div class="field">
-                        <div class="control">
-                          <button class="button is-primary">To: {ad.type}</button>
+                      <div className="field">
+                        <div className="control">
+                          <button className="button is-primary">To: {ad.type}</button>
                         </div>
                       </div>
                       <div><Link to={`/advert`}> <Button variant="outline-secondary">GoBack</Button></Link></div>
@@ -156,11 +140,11 @@ export class DetailAd extends React.Component {
                 </div>
               </div>
               <hr/>
-              <div class="level is-mobile">
-                <div class="level-left">
-                  <div class="level-item"><a href=".">Add to favorites</a></div>
+              <div className="level is-mobile">
+                <div className="level-left">
+                  <div className="level-item"><a href=".">Add to favorites</a></div>
                 </div>
-                <div class="level-right">
+                <div className="level-right">
                   {/* <div class="level-item">Share</div><a class="level-item" href="#"><img src="placeholder/icons/facebook-f.svg" alt=""/></a><a class="level-item" href="#"><img src="placeholder/icons/twitter.svg" alt=""/></a><a class="level-item" href="#"><img src="placeholder/icons/instagram.svg" alt=""/></a> */}
                 </div>
               </div>
@@ -188,6 +172,8 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state)  {
   return{
       user: state.user,
+      isFetching: state.isFetching,
+      detailAd: state.detailAd
   }
 
 }

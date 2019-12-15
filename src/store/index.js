@@ -46,7 +46,8 @@ function preloadedState(state = {}) {
 
 export function configureStore() {
     const reducer = combineReducers(reducers);
-    const middlewares = [thunkMiddelware, loggerMiddleware]
+    // const middlewares = [thunkMiddelware, loggerMiddleware]
+    const middlewares = [thunkMiddelware]
     const store = createStore(
             reducer,
             preloadedState(),

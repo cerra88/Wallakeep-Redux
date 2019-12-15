@@ -7,11 +7,12 @@ import '../../css/styles.css';
 // import UserContext from '../../context/user';
 // import {getUser} from '../../utils/storage'
 import {connect} from 'react-redux';
-// import { setReduxUser } from '../../store/actions'
+import { fetchSearchAds } from '../../store/actions'
 
 
 
-const { getAds, findAds, getTags, getTagsAds, getAdsbySearch } = api();
+
+const {findAds, getTags, getTagsAds } = api();
 
 export class Adverts extends React.Component {
   constructor(props) {
@@ -46,12 +47,12 @@ export class Adverts extends React.Component {
       // this.context.updateUser(user);
       this.props.history.push("/register");
     }
-
+    
     this.myTags();
-    this.myAds();
+    // this.myAds();
     
   }
-  loadAds = this.props.loadAds;
+  
   
   myTags = () => {
     getTags().then (tag => 
@@ -63,44 +64,51 @@ export class Adverts extends React.Component {
 }
 
 resetAds = () => {
-  this.props.history.push('/advert')
-  getAds().then (ad =>
-      this.setState({
-        ads: ad
-      })
-    );
+  window.location.reload();
+  // this.props.history.push('/advert')
+  // getAds().then (ad =>
+  //     this.setState({
+  //       ads: ad
+  //     })
+  //   );
 }
 
 
-myAds = () => {
+// myAds = () => {
 
-      const user = this.props.user
-      if(Object.keys(user).length === 0){
-        this.props.history.push("/register");
-        return;
-      }
+//       const user = this.props.user
+//       if(Object.keys(user).length === 0){
+//         this.props.history.push("/register");
+//         return;
+//       }
         
-        // if(this.props.user.tags === this.props.ads.tag)
-        getTagsAds(user.tags).then(ad =>
-          this.setState({
-            ads: ad
-          })
-        );
+//         // if(this.props.user.tags === this.props.ads.tag)
+//         getTagsAds(user.tags).then(ad =>
+//           this.setState({
+//             ads: ad
+//           })
+//         );
        
   
-  };
+//   };
 
  
 
 
   mySearch = () => {
-    console.log(this.state);
+    console.log(this.state.ads);
+
     const {name, price, tagSelected, venta} = this.state;
-    getAdsbySearch(name, price, tagSelected, venta).then(ad =>
-      this.setState({
-        ads: ad
-      })
-    );
+
+    this.props.searchAds(name, price, tagSelected, venta)
+    
+
+    //   this.props.searchAds(name, price, tagSelected, venta).then(ad =>
+    //   this.setState({
+    //     ads: ad
+    //   }),  
+    // );
+    
   }
   
 
@@ -126,7 +134,7 @@ myAds = () => {
 
   onInputChange = (event) => {
     const {name, value} = event.target;
-    console.log(name, value)
+    // console.log(name, value)
     this.setState({
         [name]: value
       }
@@ -135,15 +143,17 @@ myAds = () => {
 
 
   render() {
-    console.log(this.props.ads)
-    const { ads } = this.state;
-    const { tags, loading } = this.state;
+    // const { ads } = this.state;
+    const  ads  = this.props.ads;
+    const { tags } = this.state;
+    const searchAd = this.props.searchAd
+    console.log(searchAd)
+    
 
-
-    if(loading){
+    // if(loading){
         
-        return null
-    }
+    //     return null
+    // }
 
     return (
       <React.Fragment >
@@ -240,32 +250,42 @@ myAds = () => {
         
 
         {
-            ads 
-            && 
+
+            // ads 
+            // && 
+            // <AdsList ads={ads} />
+
+          searchAd? (
+            <AdsList ads={searchAd} />
+          ):(
             <AdsList ads={ads} />
+          )
+
+
         }
       </React.Fragment>
     );
   }
 }
 
-// function mapDispatchToProps(dispatch)  {
-//   return{
-//     loadAds: () => dispatch(fetchAds()),
+function mapDispatchToProps(dispatch)  {
+  return{
+    searchAds: (name, price, tagSelected, venta) => dispatch(fetchSearchAds(name, price, tagSelected, venta)),
     
-//   }
-// }
+  }
+}
 
 function mapStateToProps(state)  {
   return{
       user: state.user,
       ads: state.ads,
       isFetching: state.ui.isFetching,
-      err: state.ui.err
+      err: state.ui.err,
+      searchAd: state.searchAd,
   }
 
 }
 
-export default connect(mapStateToProps)(Adverts);
+export default connect(mapStateToProps, mapDispatchToProps)(Adverts);
 
 // Adverts.contextType = UserContext;
