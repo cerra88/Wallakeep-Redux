@@ -1,7 +1,7 @@
 import * as TYPES from './types'
 import api from '../utils/api'
 
-const {getAds} = api();
+const {getAds, findAdByID} = api();
 
 
 export const setReduxUser = user => ({
@@ -9,6 +9,37 @@ export const setReduxUser = user => ({
     user,
     
 });
+
+export const fetchSingleAd = (id) => {
+    return async function (dispatch, getState){
+        dispatch(fetchSingleAdRequest());
+        try {
+            const ad = await findAdByID(id)
+            console.log(ad, id)
+            dispatch(fetchSingleAdSuccess(ad));
+        } catch (err) {
+            dispatch(fetchSingleAdFailure(err))
+        }
+    }
+
+}
+
+export const fetchSingleAdRequest = () => ({
+    type: TYPES.FETCH_SINGLE_AD_REQUEST,
+    
+});
+
+export const fetchSingleAdSuccess = ad => ({
+    type: TYPES.FETCH_SINGLE_AD_SUCCESS,
+    ad,
+  });
+
+export const fetchSingleAdFailure = error => ({
+    type: TYPES.FETCH_SINGLE_AD_FAILURE,
+    error,
+});
+
+
 
 export const fetchAds = () => {
     return async function (dispatch, getState){

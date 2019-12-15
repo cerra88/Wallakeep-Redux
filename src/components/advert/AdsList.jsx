@@ -15,10 +15,10 @@ render() {
     return (
     <React.Fragment>
             
-                <div class="card-grid">
+                <div className="card-grid">
                 {this.props.ads.map(ad => (
                     
-                <Card style={{flex: 1, width: 350}}>
+                <Card key={ad._id} style={{flex: 1, width: 350}}>
                     <Link to={`/advert/${ad._id}`} className="card-header-title"> <Card.Img variant="top" fluid='true' src={`http://localhost:3001/${ad.photo}`     } /> </Link>
                     
                     <Card.Body>
@@ -31,7 +31,7 @@ render() {
                         {
                             ad.tags.map(tag => (
                             
-                            <Button className="tagButton" variant="outline-secondary"  size="sm">{tag}</Button>
+                            <Button key={tag} className="tagButton" variant="outline-secondary"  size="sm">{tag}</Button>
                             ))
                             
                         

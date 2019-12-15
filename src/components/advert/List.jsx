@@ -4,10 +4,11 @@ import AdsList from "./AdsList"
 import { Navbar, Button, Form, FormControl, Nav, Col, InputGroup  } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import '../../css/styles.css';
-import UserContext from '../../context/user';
-import {getUser} from '../../utils/storage'
+// import UserContext from '../../context/user';
+// import {getUser} from '../../utils/storage'
 import {connect} from 'react-redux';
 // import { setReduxUser } from '../../store/actions'
+
 
 
 const { getAds, findAds, getTags, getTagsAds, getAdsbySearch } = api();
@@ -22,24 +23,25 @@ export class Adverts extends React.Component {
       price:"",
       type:"",
       loading: true,
+      
 
     };
     
   }
   
-  updateFilterFromStorage () {
-    const user = getUser();
-    if (user !== null) {
-      this.context.updateUser(user);
-    }
-    return user;
-  }
+  // updateFilterFromStorage () {
+  //   const user = getUser();
+  //   if (user !== null) {
+  //     this.context.updateUser(user);
+  //   }
+  //   return user;
+  // }
 
 
   componentDidMount(){
-    
+  
+  
     const user = this.props.user
-    console.log(Object.keys(user))
     if(Object.keys(user).length === 0){
       // this.context.updateUser(user);
       this.props.history.push("/register");
@@ -47,8 +49,10 @@ export class Adverts extends React.Component {
 
     this.myTags();
     this.myAds();
+    
   }
-
+  loadAds = this.props.loadAds;
+  
   myTags = () => {
     getTags().then (tag => 
         this.setState({
@@ -71,19 +75,24 @@ resetAds = () => {
 myAds = () => {
 
       const user = this.props.user
-      if(user == null){
-        this.context.updateUser(user);
+      if(Object.keys(user).length === 0){
         this.props.history.push("/register");
         return;
       }
         
+        // if(this.props.user.tags === this.props.ads.tag)
         getTagsAds(user.tags).then(ad =>
           this.setState({
             ads: ad
           })
         );
+       
   
   };
+
+ 
+
+
   mySearch = () => {
     console.log(this.state);
     const {name, price, tagSelected, venta} = this.state;
@@ -126,7 +135,7 @@ myAds = () => {
 
 
   render() {
-    console.log('ads desde redux: ', this.props.ads);
+    console.log(this.props.ads)
     const { ads } = this.state;
     const { tags, loading } = this.state;
 
@@ -138,24 +147,6 @@ myAds = () => {
 
     return (
       <React.Fragment >
-        {/* <Navbar collapseOnSelect bg="dark" className="navbar-isdark" variant="dark">
-        <Link to="/advert"><Navbar.Brand>
-            <img
-              src="https://es.seaicons.com/wp-content/uploads/2015/09/Online-Shopping-icon.png"
-              width="30"
-              height="30"
-              className="d-inline-block align-top"
-              alt="WallaKeep"
-            />{' '}
-            WallaKeep
-        </Navbar.Brand>
-        </Link>
-          <Form inline>
-            <FormControl type="text" placeholder="Search" onKeyUp={this.search} className="mr-sm-2" />
-            <Button variant="outline-info">Search</Button>
-          </Form>
-        </Navbar> */}
-
 <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
 <Link to="/advert"><Navbar.Brand>
             <img
@@ -200,11 +191,11 @@ myAds = () => {
         <Form.Group as={Col} md="6" controlId="validationCustom02">
           <Form.Label>Tags</Form.Label>
           <Form.Control as="select" name="tagSelected" required autoFocus={true}  onChange={this.onInputChange}>
-                    <option className="field" value="" selected disabled>Choose your Tag</option>
+                    <option className="field" value="" >Choose your Tag</option>
             {
                 tags.map(element =>(
                     
-                    <option> {element}</option> 
+                    <option key={element}>  {element}</option> 
                 // <option value={element}>{element}</option> 
                 
                 ))
@@ -217,7 +208,7 @@ myAds = () => {
       <Form.Group as={Col} md="6" controlId="validationCustom02">
           <Form.Label>Seller or Buyer</Form.Label>
           <Form.Control as="select" name="venta" size="" autoFocus={true}  onChange={this.onInputChange}>
-                    <option className="field" value="" name="" selected disabled>Choose an option</option>
+                    <option className="field" value="" name="" >Choose an option</option>
                     <option className="field"  value="true" >sell</option>
                     <option className="field"  value="false" >buy</option>
 
@@ -258,7 +249,12 @@ myAds = () => {
   }
 }
 
-
+// function mapDispatchToProps(dispatch)  {
+//   return{
+//     loadAds: () => dispatch(fetchAds()),
+    
+//   }
+// }
 
 function mapStateToProps(state)  {
   return{
@@ -270,6 +266,6 @@ function mapStateToProps(state)  {
 
 }
 
-export default connect(mapStateToProps, null)(Adverts);
+export default connect(mapStateToProps)(Adverts);
 
-Adverts.contextType = UserContext;
+// Adverts.contextType = UserContext;

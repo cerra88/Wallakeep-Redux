@@ -14,14 +14,14 @@ export const api = () => {
 
     },
     
-    getAds: (query) => {
+    getAds: async (query) => {
         const endPoint = `http://localhost:3001/apiv1/anuncios`
-        return axios.get(endPoint)
-        .then(response => response.data.results)
+        const response = await axios.get(endPoint);
+      return response.data.results;
 
     },
 
-    getAdsbySearch: (name, price, tagSelected, venta) => {
+    getAdsbySearch: async (name, price, tagSelected, venta) => {
         
         let endPoint = `${API_URL}`
         
@@ -40,44 +40,45 @@ export const api = () => {
           
         }
         // console.log(endPoint)
-        return axios.get(endPoint)
-        .then(response => response.data.results)
+        const response = await axios.get(endPoint);
+      return response.data.results;
 
     },
 
-    findAds: (query) => {
+    findAds: async (query) => {
         
         const endPoint = `http://localhost:3001/apiv1/anuncios?name=${query}`;
         
-        return axios.get(endPoint)
-        .then(response => response.data.results)
+        const response = await axios.get(endPoint);
+      return response.data.results;
     },
 
-    findAdByID: (id) => {
+    findAdByID: async (id) => {
         console.log(id)
         const endPoint = `http://localhost:3001/apiv1/anuncios/${id}`;
-        return axios.get(endPoint)
-        .then(response => response.data.result)
+        const response = await axios.get(endPoint);
+      return response.data.result;
         
       },
       
-      getTags: () => {
+      getTags: async () => {
         const endPoint = `http://localhost:3001/apiv1/tags`
         
-        return axios.get(endPoint)
-        .then(response => response.data.results)
+        const response = await axios.get(endPoint);
+        return response.data.results;
         
 
     },
 
-    editAdvert: (id, advert) => {
+    editAdvert: async (id, advert) => {
       const endPoint = `http://localhost:3001/apiv1/anuncios/${id}`;
       
-			return axios({
-          method: 'put',
-          url: endPoint,
-          data: advert 
-        }).then(res => res)
+			const res = await axios({
+        method: 'put',
+        url: endPoint,
+        data: advert
+      });
+      return res;
         
     },
     

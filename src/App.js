@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import {Provider} from 'react-redux';
 import { connect } from 'react-redux';
-import api from './utils/api'
+// import api from './utils/api'
 import {Alert} from 'react-bootstrap';
 import ReactSpinner from 'react-bootstrap-spinner'
 import {fetchAds} from './store/actions'
@@ -53,16 +53,13 @@ export class App extends React.Component {
   }
 }
 
-// function mapDispatchToProps(dispatch)  {
-//   return{
-//     loadAds: () => dispatch(fetchAds()),
+function mapDispatchToProps(dispatch)  {
+  return{
+    loadAds: () => dispatch(fetchAds()),
     
-//   }
-// }
-
-const mapDispatchToProps = {
-  loadAds: fetchAds, 
+  }
 }
+
 
 function mapStateToProps(state)  {
   return{

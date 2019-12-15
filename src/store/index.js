@@ -23,7 +23,8 @@ function preloadedState(state = {}) {
             ui: {
                 isFetching: false,
                 err: null
-            }
+            },
+            detailAd: null,
             
     }
     }else{
@@ -33,7 +34,9 @@ function preloadedState(state = {}) {
             ui: {
                 isFetching: false,
                 err: null
-            }
+            },
+            detailAd: null,
+            
             
         }
     }

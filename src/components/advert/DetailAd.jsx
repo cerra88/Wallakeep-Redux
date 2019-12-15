@@ -3,8 +3,8 @@ import api from "../../utils/api";
 import '../../css/bulma.css';
 import '../../css/styles.css';
 import { Link } from "react-router-dom";
-import UserContext from '../../context/user';
 import {connect} from 'react-redux';
+import {fetchSingleAd} from '../../store/actions'
 
 import { Nav, Navbar, Button, ButtonToolbar, Form, FormControl  } from 'react-bootstrap';
 
@@ -22,7 +22,6 @@ export class DetailAd extends React.Component {
   componentDidMount(){
     const user = this.props.user;
     if(Object.keys(user).length === 0){
-      this.context.updateUser(user);
       this.props.history.push("/register");
     }
 
@@ -34,7 +33,8 @@ export class DetailAd extends React.Component {
     // }
 
     const adId = this.props.match.params.adId;
-    this.findByID(adId);
+    // this.findByID(adId);
+    this.props.loadAd(adId)
 
   }
   
@@ -177,12 +177,20 @@ export class DetailAd extends React.Component {
   
 }
 
+
+function mapDispatchToProps(dispatch) {
+  return {
+    loadAd: id => dispatch(fetchSingleAd(id)),
+  }
+}
+
+
 function mapStateToProps(state)  {
   return{
       user: state.user,
   }
 
 }
-export default connect(mapStateToProps, null)(DetailAd);
+export default connect(mapStateToProps, mapDispatchToProps)(DetailAd);
 
-DetailAd.contextType = UserContext;
+
