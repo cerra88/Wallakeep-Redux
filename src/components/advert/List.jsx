@@ -1,6 +1,7 @@
 import React from "react";
 import api from "../../utils/api";
 import AdsList from "./AdsList"
+import AdsListHook from "./AdsListHook"
 import { Navbar, Button, Form, FormControl, Nav, Col, InputGroup  } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import '../../css/styles.css';
